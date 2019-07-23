@@ -67,6 +67,15 @@ def _init():
     obj = {'label': 'Sleipnir', 'name': 'Sleipnir', 'type': 'browser'}  # NOQA
     obj['vendor'] = 'Fenrir Inc.'
     DATASET[obj['label']] = obj
+    obj = {'label': 'Instagram', 'name': 'Instagram App', 'type': 'browser'}  # NOQA
+    obj['vendor'] = 'Instagram'
+    DATASET[obj['label']] = obj
+    obj = {'label': 'Facebook', 'name': 'Facebook App', 'type': 'browser'}  # NOQA
+    obj['vendor'] = 'Facebook'
+    DATASET[obj['label']] = obj
+    obj = {'label': 'Pinterest', 'name': 'Pinterest App', 'type': 'browser'}  # NOQA
+    obj['vendor'] = 'Pinterest'
+    DATASET[obj['label']] = obj
     obj = {'label': 'Webview', 'name': 'Webview', 'type': 'browser'}  # NOQA
     obj['vendor'] = 'OS vendor'
     DATASET[obj['label']] = obj

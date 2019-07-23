@@ -84,6 +84,8 @@ def try_browser(useragent, result):
         return True
     if browser.challenge_opera(useragent, result):
         return True
+    if browser.challenge_in_app(useragent, result):
+        return True
     if browser.challenge_webview(useragent, result):
         return True
     return False

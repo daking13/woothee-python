@@ -113,6 +113,26 @@ def challenge_opera(ua, result):
     util.update_version(result, version)
     return True
 
+def challenge_in_app(ua, result):
+    instagram = re.search('Instagram ([.0-9]+)', ua)
+    facebook = re.search(r';fbav\/([\w\.]+);', ua, re.I)
+    pinterest = re.search('Pinterest/', ua)
+    if not instagram and not facebook and not pinterest:
+        return False
+    if instagram:
+        version = instagram.group(1)
+        util.update_map(result, dataset.get('Instagram'))
+        util.update_version(result, version)
+        return True
+    if facebook:
+        version = facebook.group(1)
+        util.update_map(result, dataset.get('Facebook'))
+        util.update_version(result, version)
+        return True
+    if pinterest:
+        util.update_map(result, dataset.get('Pinterest'))
+        util.update_version(result, dataset.VALUE_UNKNOWN)
+        return True
 
 def challenge_webview(ua, result):
 
