@@ -43,6 +43,8 @@ def challenge_yandexbrowser(ua, result):
 def challenge_safari_chrome(ua, result):
     if 'Safari/' not in ua:
         return False
+    if 'GSA/' in ua:
+        return False
     if 'Chrome' in ua and 'wv' in ua:
         return False
 
@@ -115,9 +117,11 @@ def challenge_opera(ua, result):
 
 def challenge_in_app(ua, result):
     instagram = re.search('Instagram ([.0-9]+)', ua)
-    facebook = re.search(r';fbav\/([\w\.]+);', ua, re.I)
-    pinterest = re.search('Pinterest/', ua)
-    if not instagram and not facebook and not pinterest:
+    facebook = re.search(r';(fbav|fbsv)\/([\w\.]+);', ua, re.I)
+    google = re.search(r'GSA\/([\w\.]+)', ua)
+    wechat = re.search(r'micromessenger\/([\w\.]+)', ua, re.I)
+    other_in_app = re.search('(Pinterest|dealmoon|Weibo|AppleNews)', ua)
+    if not instagram and not facebook and not google and not wechat and not other_in_app:
         return False
     if instagram:
         version = instagram.group(1)
@@ -125,12 +129,23 @@ def challenge_in_app(ua, result):
         util.update_version(result, version)
         return True
     if facebook:
-        version = facebook.group(1)
+        version = facebook.group(2)
         util.update_map(result, dataset.get('Facebook'))
         util.update_version(result, version)
         return True
-    if pinterest:
-        util.update_map(result, dataset.get('Pinterest'))
+    if wechat:
+        version = wechat.group(1)
+        util.update_map(result, dataset.get('WeChat'))
+        util.update_version(result, version)
+        return True
+    if google:
+        version = google.group(1)
+        util.update_map(result, dataset.get('GSA'))
+        util.update_version(result, version)
+        return True
+    if other_in_app:
+        app_name = other_in_app.group(1)
+        util.update_map(result, dataset.get(app_name))
         util.update_version(result, dataset.VALUE_UNKNOWN)
         return True
 
