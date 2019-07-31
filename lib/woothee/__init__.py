@@ -12,7 +12,7 @@ from . import appliance
 from . import misc
 
 VERSION = (1, 10, 0)
-__version__ = '1.10.2-forked'
+__version__ = '1.10.4-forked'
 
 FILLED = {
     dataset.ATTRIBUTE_NAME: dataset.VALUE_UNKNOWN,

@@ -71,12 +71,12 @@ def challenge_osx(ua, result):
     data = dataset.get('OSX')
     version = None
     if 'like Mac OS X' in ua:
-        if 'iPhone;' in ua:
-            data = dataset.get('iPhone')
-        elif 'iPad;' in ua:
+        if 'iPad;' in ua:
             data = dataset.get('iPad')
-        elif 'iPod' in ua:
+        elif 'iPod;' in ua:
             data = dataset.get('iPod')
+        elif 'iPhone' in ua:
+            data = dataset.get('iPhone')
 
         regex = re.compile(
             r"; CPU(?: iPhone)? OS (\d+_\d+(?:_\d+)?) like Mac OS X")
@@ -103,7 +103,27 @@ def challenge_linux(ua, result):
 
     data = None
     os_version = None
-    if 'Android' in ua:
+    tablet_regexes = [
+        re.compile(r"android.+;\s(pixel c)[\s)]", flags=re.I),
+        re.compile(r"android.+((sch-i[89]0\d|shw-m380s|gt-p\d{4}|gt-n\d+|sgh-t8[56]9|nexus 10))", flags=re.I),
+        re.compile(r"android.+(transfo[prime\s]{4,10}\s\w+|eeepc|slider\s\w+|nexus 7|padfone|p00c)", flags=re.I),
+        re.compile(r"(kf[A-z]+).+silk\/", flags=re.I),
+        re.compile(r"android.+(KS(.+))\s+build", flags=re.I),
+        re.compile(r"(nexus\s9)", flags=re.I),
+        re.compile(r"((SM-T\w+))", flags=re.I),
+        re.compile(r"android.+([vl]k\-?\d{3})\s+build", flags=re.I),
+        re.compile(r"android\s3\.[\s\w;-]{10}(lg?)-([06cv9]{3,4})", flags=re.I),
+        re.compile(r"(lenovo)\s?(s(?:5000|6000)(?:[\w-]+)|tab(?:[\s\w]+))", flags=re.I),
+        re.compile(r"android.+(ideatab[a-z0-9\-\s]+)", flags=re.I),
+    ]
+    tablet_matches = any(regex.search(ua) for regex in tablet_regexes)
+    if tablet_matches:
+        data = dataset.get('AndroidTablet')
+        regex = re.compile(r"Android[- ](\d+(?:\.\d+(?:\.\d+)?)?)")
+        m = regex.search(ua)
+        if m:
+            os_version = m.group(1)
+    elif 'Android' in ua:
         data = dataset.get('Android')
         regex = re.compile(r"Android[- ](\d+(?:\.\d+(?:\.\d+)?)?)")
         m = regex.search(ua)
@@ -121,12 +141,12 @@ def challenge_linux(ua, result):
 def challenge_smartphone(ua, result):
     data = None
     os_version = None
-    if 'iPhone' in ua:
-        data = dataset.get('iPhone')
-    elif 'iPad' in ua:
+    if 'iPad' in ua:
         data = dataset.get('iPad')
     elif 'iPod' in ua:
         data = dataset.get('iPod')
+    elif 'iPhone' in ua:
+        data = dataset.get('iPhone')
     elif 'Android' in ua:
         data = dataset.get('Android')
     elif 'CFNetwork' in ua:
