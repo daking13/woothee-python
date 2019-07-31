@@ -73,7 +73,7 @@ def challenge_osx(ua, result):
     if 'like Mac OS X' in ua:
         if 'iPad;' in ua:
             data = dataset.get('iPad')
-        elif 'iPod;' in ua:
+        elif 'iPod' in ua:
             data = dataset.get('iPod')
         elif 'iPhone' in ua:
             data = dataset.get('iPhone')
@@ -116,8 +116,7 @@ def challenge_linux(ua, result):
         re.compile(r"(lenovo)\s?(s(?:5000|6000)(?:[\w-]+)|tab(?:[\s\w]+))", flags=re.I),
         re.compile(r"android.+(ideatab[a-z0-9\-\s]+)", flags=re.I),
     ]
-    tablet_matches = any(regex.search(ua) for regex in tablet_regexes)
-    if tablet_matches:
+    if any(regex.search(ua) for regex in tablet_regexes):
         data = dataset.get('AndroidTablet')
         regex = re.compile(r"Android[- ](\d+(?:\.\d+(?:\.\d+)?)?)")
         m = regex.search(ua)
